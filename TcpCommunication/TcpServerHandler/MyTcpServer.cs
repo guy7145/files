@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
-namespace ControlPanel.ThreadObjects
+namespace TcpCommunication.TcpServerHandler
 {
-    class MyTcpServer
+    public class MyTcpServer
     {
         private bool _running, _connected;
         private int port;

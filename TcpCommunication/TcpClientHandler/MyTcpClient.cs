@@ -9,24 +9,25 @@ using System.Net.Sockets;
 
 namespace TcpCommunication.TcpClientHandler
 {
-    class MyTcpClient
+    public class MyTcpClient
     {
         private volatile bool _running, _connected;
-        private string serverIp;
+        private IPAddress serverIp;
         private int serverPort;
         private TcpClient client;
         private Stream stream;
 
-        public void SendMessage(string msg)
+        public MyTcpClient(IPAddress ip, int port)
         {
- 
+            this.serverIp = ip;
+            this.serverPort = port;
+            client = new TcpClient();
         }
-        public void Connect(string ip, int port)
+        public void Connect()
         {
             try
             {
-                client = new TcpClient();
-                client.Connect(ip, port);
+                client.Connect(serverIp, serverPort);
                 stream = client.GetStream();
                 _connected = true;
             }
