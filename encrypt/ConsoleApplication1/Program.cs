@@ -9,7 +9,7 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
-            ICryptograph cat = new DoubleCat(new byte[32], new byte[16]);
+            ICryptograph cat = new AesCryptor(new byte[32], new byte[16]);
             Console.WriteLine("Hello World!");
             
             byte[] encrypted = cat.Encrypt("Hello World!");

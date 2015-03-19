@@ -7,12 +7,12 @@ using System.IO;
 
 namespace ConsoleApplication1
 {
-    class DoubleCat : ICryptograph
+    class AesCryptor : ICryptograph
     {
         Aes myAes;
         ICryptoTransform encryptor, decryptor;
 
-        public DoubleCat(byte[] Key, byte[] IV)
+        public AesCryptor(byte[] Key, byte[] IV)
         {
             myAes = Aes.Create();
             myAes.Key = Key;
