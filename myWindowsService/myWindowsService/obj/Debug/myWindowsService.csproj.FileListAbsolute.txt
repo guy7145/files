@@ -1,0 +1,10 @@
+C:\Users\Familly\Documents\Guy\Workspace\myWindowsService\myWindowsService\bin\Debug\myWindowsService.exe.config
+C:\Users\Familly\Documents\Guy\Workspace\myWindowsService\myWindowsService\bin\Debug\myWindowsService.exe
+C:\Users\Familly\Documents\Guy\Workspace\myWindowsService\myWindowsService\bin\Debug\myWindowsService.pdb
+C:\Users\Familly\Documents\Guy\Workspace\myWindowsService\myWindowsService\obj\Debug\myWindowsService.csprojResolveAssemblyReference.cache
+C:\Users\Familly\Documents\Guy\Workspace\myWindowsService\myWindowsService\obj\Debug\myWindowsService.exe
+C:\Users\Familly\Documents\Guy\Workspace\myWindowsService\myWindowsService\obj\Debug\myWindowsService.pdb
+C:\Users\Familly\Documents\Guy\Workspace\myWindowsService\myWindowsService\obj\Debug\myWindowsService.myFirstService.resources
+C:\Users\Familly\Documents\Guy\Workspace\myWindowsService\myWindowsService\obj\Debug\myWindowsService.ProjectInstaller.resources
+C:\Users\Familly\Documents\Guy\Workspace\myWindowsService\myWindowsService\obj\Debug\myWindowsService.csproj.GenerateResource.Cache
+C:\Users\Familly\Documents\Guy\Workspace\myWindowsService\myWindowsService\bin\Debug\Noesis.Javascript.dll

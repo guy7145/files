@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 0 = built-in; 1 = js; 2 = cmd; -->
+<commands id="commands">
+  <script id="0" type="1" singleLine="false" url="C:\\Users\\Familly\\Documents\\Guy\\_scriptJS.txt"></script>
+  <script id="1" type="2" singleLine="false" url="C:\\Users\\Familly\\Documents\\Guy\\_scriptCMD.txt"></script>
+  <script id="2" type="2" singleLine="true">tracert www.google.com</script>
+  <script id="4" type="2" singleLine="true">ping www.google.com</script>
+  <script id="5" type="2" singleLine="true">pause</script>
+  <script id="6" type="1" singleLine="true">var i = 0; i++;</script>
+  <script id="7" type="0" singleLine="true">Sleep 2000</script>
+  <script id="7" type="0" singleLine="true">Sleep -1</script>
+</commands>
