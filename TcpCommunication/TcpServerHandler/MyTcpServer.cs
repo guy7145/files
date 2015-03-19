@@ -49,28 +49,28 @@ namespace ControlPanel.ThreadObjects
         public byte[] StreamIn()
         {
             try
-            {   
-                while (_running)
-                {
-                    byte_b = new byte[1000];
-                    int k = socket.Receive(byte_b);
-                    
-                    for (int i = 0; i < k; i++)
-                        Console.Write(Convert.ToChar(byte_b[i]));
-                    Console.WriteLine();
-                    System.Threading.Thread.Sleep(1000);
-                }
+            {
+                byte_b = new byte[1000];
+                int k = socket.Receive(byte_b);
+                return byte_b;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error..... " + e.StackTrace);
+                return null;
             }
         }
-        public void Send(string msg)
+        public bool StreamOut(byte[] data)
         {
-            byte_a = asciiEncoder.GetBytes(msg);
-            socket.Send(byte_a);
-            Console.WriteLine("Message Sent");
+            try
+            {
+                socket.Send(data);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
         public bool RequestStop()
         {
