@@ -20,7 +20,7 @@ namespace ConsoleApplication1
             encryptor = myAes.CreateEncryptor(myAes.Key, myAes.IV);
             decryptor = myAes.CreateDecryptor(myAes.Key, myAes.IV);
         }
-        byte[] ICryptograph.Encrypt(string data)
+        byte[] ICryptograph.EncryptToByte(string data)
         {
             byte[] result;
 
@@ -39,6 +39,26 @@ namespace ConsoleApplication1
                 }
             }
             return result;
+        }
+        Stream ICryptograph.EncryptToStream(string data)
+        {
+            byte[] result;
+
+            // Create the streams used for encryption. 
+            using (MemoryStream msEncrypt = new MemoryStream())
+            {
+                using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                {
+                    using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                    {
+
+                        //Write all data to the stream.
+                        swEncrypt.Write(data);
+                    }
+                    result = msEncrypt.ToArray();
+                }
+            }
+            return null;
         }
         string ICryptograph.Decrypt(byte[] data)
         {

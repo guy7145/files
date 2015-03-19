@@ -12,7 +12,7 @@ namespace ConsoleApplication1
             ICryptograph cat = new AesCryptor(new byte[32], new byte[16]);
             Console.WriteLine("Hello World!");
             
-            byte[] encrypted = cat.Encrypt("Hello World!");
+            byte[] encrypted = cat.EncryptToByte("Hello World!");
             string show = "";
             for (int i = 0; i < encrypted.Length; i++)
             {
