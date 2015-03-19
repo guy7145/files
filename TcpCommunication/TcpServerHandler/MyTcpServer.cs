@@ -24,7 +24,6 @@ namespace ControlPanel.ThreadObjects
             this.port = port;
             listener = new TcpListener(this.ip, this.port);
         }
-
         public void Connect()
         {
             try
@@ -50,7 +49,7 @@ namespace ControlPanel.ThreadObjects
         {
             try
             {
-                byte_b = new byte[1000];
+                byte_b = new byte[256];
                 int k = socket.Receive(byte_b);
                 return byte_b;
             }
@@ -86,6 +85,5 @@ namespace ControlPanel.ThreadObjects
                 return false;
             }
         }
-    
     }
 }
