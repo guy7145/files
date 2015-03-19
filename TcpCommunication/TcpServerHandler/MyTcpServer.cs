@@ -10,7 +10,7 @@ namespace TcpCommunication.TcpServerHandler
 {
     public class MyTcpServer
     {
-        private bool _running, _connected;
+        private bool _connected, _listen, _streamIn;
         private int port;
         private IPAddress ip;
         private TcpListener listener;
@@ -18,12 +18,13 @@ namespace TcpCommunication.TcpServerHandler
         ASCIIEncoding asciiEncoder;
         private byte[] byte_a, byte_b;
 
-        public MyTcpServer(string ip, int port)
+        public MyTcpServer(IPAddress ip, int port)
         {
-            this.ip = IPAddress.Parse(ip);
+            this.ip = ip;
             this.port = port;
             listener = new TcpListener(this.ip, this.port);
-            _connected = _running = false;
+            asciiEncoder = new ASCIIEncoding();
+            _connected = _listen = _streamIn = false;
         }
         public void Connect()
         {
@@ -31,14 +32,15 @@ namespace TcpCommunication.TcpServerHandler
             {
                 /* Start Listeneting at the specified port */
                 listener.Start();
+                while (_listen)
+                {
+                    Console.WriteLine("The server is running at port {0}...", port);
+                    Console.WriteLine("The local End point is: " + listener.LocalEndpoint);
+                    Console.WriteLine("Waiting for a connection.....");
 
-                Console.WriteLine("The server is running at port {0}...", port);
-                Console.WriteLine("The local End point is: " + listener.LocalEndpoint);
-                Console.WriteLine("Waiting for a connection.....");
-
-                socket = listener.AcceptSocket();
-                Console.WriteLine("Connection accepted from " + socket.RemoteEndPoint);
-                asciiEncoder = new ASCIIEncoding();
+                    socket = listener.AcceptSocket();
+                    Console.WriteLine("Connection accepted from " + socket.RemoteEndPoint);
+                }
                 _connected = true;
             }
             catch (Exception e)
@@ -49,7 +51,6 @@ namespace TcpCommunication.TcpServerHandler
         }
         public byte[] StreamIn()
         {
-            _run();
             try
             {
                 byte_b = new byte[256];
@@ -61,14 +62,9 @@ namespace TcpCommunication.TcpServerHandler
                 Console.WriteLine("Error..... " + e.StackTrace);
                 return null;
             }
-            finally
-            {
-                _unrun();
-            }
         }
         public bool StreamOut(byte[] data)
         {
-            _run();
             try
             {
                 socket.Send(data);
@@ -78,20 +74,17 @@ namespace TcpCommunication.TcpServerHandler
             {
                 return false;
             }
-            finally
-            {
-                _unrun();
-            }
         }
-
-        public bool RequestStop()
+        public void RequestStopStreamIn()
+        {
+            _streamIn = false;
+        }
+        public bool RequestDisconnect()
         {
             try
             {
                 socket.Close();
-                _running = false;
                 _connected = false;
-
                 return true;
             }
             catch (Exception e)
@@ -99,21 +92,31 @@ namespace TcpCommunication.TcpServerHandler
                 return false;
             }
         }
-        private void _run()
+        public void RequestStopListening()
         {
-            _running = true;
+            this._listen = false;
         }
-        private void _unrun()
+        public bool RequestKill()
         {
-            _running = false;
-        }
-        public bool IsRunning()
-        {
-            return this._running;
+            bool ans = RequestDisconnect();
+            if (ans)
+            {
+                RequestStopListening();
+                RequestStopStreamIn();
+            }
+            return ans;
         }
         public bool IsConnected()
         {
             return this._connected;
+        }
+        public bool IsStreaming()
+        {
+            return this._streamIn;
+        }
+        public bool IsListening()
+        {
+            return this._listen;
         }
     }
 }

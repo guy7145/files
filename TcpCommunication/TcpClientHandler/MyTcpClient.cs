@@ -65,8 +65,8 @@ namespace TcpCommunication.TcpClientHandler
 
             try
             {
-                byteResponseRecieved = new byte[100];
-                k = stream.Read(byteResponseRecieved, 0, 100);
+                byteResponseRecieved = new byte[256];
+                k = stream.Read(byteResponseRecieved, 0, 256);
                 char[] c = new char[byteResponseRecieved.Length];
                 for (int i = 0; i < k; i++)
                     c[i] = Convert.ToChar(byteResponseRecieved[i]);

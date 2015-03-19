@@ -17,7 +17,13 @@ namespace TcpCommunication.TcpServerHandler
             Console.WriteLine("port: ");
             int port = int.Parse(Console.ReadLine());
 
+            
+            MyTcpServer sr = new MyTcpServer(ip, port);
             MyTcpClient cl = new MyTcpClient(ip, port);
+            cl.Connect();
+            sr.Connect();
+            cl.StreamOut("abcdefg");
+            Console.ReadKey();
         }
     }
 }
