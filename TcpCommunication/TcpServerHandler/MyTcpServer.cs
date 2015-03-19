@@ -10,7 +10,7 @@ namespace ControlPanel.ThreadObjects
 {
     class MyTcpServer
     {
-        private bool _running;
+        private bool _running, _connected;
         private int port;
         private IPAddress ip;
         private TcpListener listener;
@@ -23,6 +23,7 @@ namespace ControlPanel.ThreadObjects
             this.ip = IPAddress.Parse(ip);
             this.port = port;
             listener = new TcpListener(this.ip, this.port);
+            _connected = _running = false;
         }
         public void Connect()
         {
@@ -38,15 +39,17 @@ namespace ControlPanel.ThreadObjects
                 socket = listener.AcceptSocket();
                 Console.WriteLine("Connection accepted from " + socket.RemoteEndPoint);
                 asciiEncoder = new ASCIIEncoding();
-                _running = true;
+                _connected = true;
             }
             catch (Exception e)
             {
+                _connected = false;
                 Console.WriteLine("Error..... " + e.StackTrace);
             }
         }
         public byte[] StreamIn()
         {
+            _run();
             try
             {
                 byte_b = new byte[256];
@@ -58,9 +61,14 @@ namespace ControlPanel.ThreadObjects
                 Console.WriteLine("Error..... " + e.StackTrace);
                 return null;
             }
+            finally
+            {
+                _unrun();
+            }
         }
         public bool StreamOut(byte[] data)
         {
+            _run();
             try
             {
                 socket.Send(data);
@@ -70,20 +78,42 @@ namespace ControlPanel.ThreadObjects
             {
                 return false;
             }
+            finally
+            {
+                _unrun();
+            }
         }
+
         public bool RequestStop()
         {
             try
             {
                 socket.Close();
-                listener.Stop();
                 _running = false;
+                _connected = false;
+
                 return true;
             }
             catch (Exception e)
             {
                 return false;
             }
+        }
+        private void _run()
+        {
+            _running = true;
+        }
+        private void _unrun()
+        {
+            _running = false;
+        }
+        public bool IsRunning()
+        {
+            return this._running;
+        }
+        public bool IsConnected()
+        {
+            return this._connected;
         }
     }
 }

@@ -37,26 +37,27 @@ namespace TcpCommunication.TcpClientHandler
         }
         public void StreamOut(string msg)
         {
-            _running = true;
+            _run();
             ASCIIEncoding asciiEncoder = new ASCIIEncoding();
             byte[] byteMsg;
-            
+
             try
             {
-                while (_running)
-                {
-                    byteMsg = asciiEncoder.GetBytes(msg);
-                    stream.Write(byteMsg, 0, byteMsg.Length);
-                }
+                byteMsg = asciiEncoder.GetBytes(msg);
+                stream.Write(byteMsg, 0, byteMsg.Length);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error..... " + e.StackTrace);
             }
+            finally
+            {
+                _unrun();
+            }
         }
         public string StreamIn()
         {
-            _running = true;
+            _run();
             ASCIIEncoding asciiEncoder = new ASCIIEncoding();
             byte[] byteResponseRecieved;
             int k;
@@ -74,6 +75,10 @@ namespace TcpCommunication.TcpClientHandler
             {
                 return e.Message;
             }
+            finally
+            {
+                _unrun();
+            }
         }
         public bool RequestStop()
         {
@@ -89,6 +94,14 @@ namespace TcpCommunication.TcpClientHandler
             {
                 return false;
             }
+        }
+        private void _run()
+        {
+            _running = true;
+        }
+        private void _unrun()
+        {
+            _running = false;
         }
         public bool IsRunning()
         {
