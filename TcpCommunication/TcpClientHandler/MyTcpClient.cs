@@ -59,7 +59,6 @@ namespace TcpCommunication.TcpClientHandler
             _running = true;
             ASCIIEncoding asciiEncoder = new ASCIIEncoding();
             byte[] byteResponseRecieved;
-            string responseReceived;
             int k;
 
             try
@@ -69,13 +68,11 @@ namespace TcpCommunication.TcpClientHandler
                 char[] c = new char[byteResponseRecieved.Length];
                 for (int i = 0; i < k; i++)
                     c[i] = Convert.ToChar(byteResponseRecieved[i]);
-                responseReceived = (new string(c)).Split('\0')[0];
-                if (responseReceived == "abort")
-                    RequestStop();
+                return (new string(c)).Split('\0')[0];
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error..... " + e.StackTrace);
+                return e.Message;
             }
         }
         public bool RequestStop()
