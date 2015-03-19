@@ -10,3 +10,6 @@ E:\Sql - Server\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplica
 E:\Sql - Server\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
 E:\Sql - Server\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
 E:\Sql - Server\ConsoleApplication1\ConsoleApplication1\obj\Debug\First Database Connection.csprojResolveAssemblyReference.cache
+C:\_Guy\University\Studies\Semester B\Introduction to Software Engineering\Github\files\Sql - Server\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+C:\_Guy\University\Studies\Semester B\Introduction to Software Engineering\Github\files\Sql - Server\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\_Guy\University\Studies\Semester B\Introduction to Software Engineering\Github\files\Sql - Server\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
