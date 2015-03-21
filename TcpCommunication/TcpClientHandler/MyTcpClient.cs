@@ -11,7 +11,7 @@ namespace TcpCommunication.TcpClientHandler
 {
     public class MyTcpClient
     {
-        private volatile bool _running, _connected;
+        private volatile bool _streamIn, _connected;
         private IPAddress serverIp;
         private int serverPort;
         private TcpClient client;
@@ -22,6 +22,7 @@ namespace TcpCommunication.TcpClientHandler
             this.serverIp = ip;
             this.serverPort = port;
             client = new TcpClient();
+            _streamIn = _connected = false;
         }
         public void Connect()
         {
@@ -38,7 +39,6 @@ namespace TcpCommunication.TcpClientHandler
         }
         public void StreamOut(string msg)
         {
-            _run();
             ASCIIEncoding asciiEncoder = new ASCIIEncoding();
             byte[] byteMsg;
 
@@ -51,44 +51,37 @@ namespace TcpCommunication.TcpClientHandler
             {
                 Console.WriteLine("Error..... " + e.StackTrace);
             }
-            finally
-            {
-                _unrun();
-            }
         }
-        public string StreamIn()
+        public void StreamIn()
         {
-            _run();
             ASCIIEncoding asciiEncoder = new ASCIIEncoding();
-            byte[] byteResponseRecieved;
+            byte[] byteResponseRecieved = new byte[256];
             int k;
+
+            _streamIn = true;
 
             try
             {
-                byteResponseRecieved = new byte[256];
-                k = stream.Read(byteResponseRecieved, 0, 256);
-                char[] c = new char[byteResponseRecieved.Length];
-                for (int i = 0; i < k; i++)
-                    c[i] = Convert.ToChar(byteResponseRecieved[i]);
-                return (new string(c)).Split('\0')[0];
+                while (_streamIn)
+                {
+                    k = stream.Read(byteResponseRecieved, 0, 256);
+                    char[] c = new char[byteResponseRecieved.Length];
+                    for (int i = 0; i < k; i++)
+                        c[i] = Convert.ToChar(byteResponseRecieved[i]);
+                    Console.WriteLine((new string(c)).Split('\0')[0]);
+                }
             }
             catch (Exception e)
             {
-                return e.Message;
-            }
-            finally
-            {
-                _unrun();
+                Console.WriteLine(e.Message);
             }
         }
         public bool RequestStop()
         {
             try
             {
-                client.Close();
-                _running = false;
-                _connected = false;
-
+                RequestStopStreamIn();
+                RequestDisconnect();
                 return true;
             }
             catch (Exception e)
@@ -96,17 +89,35 @@ namespace TcpCommunication.TcpClientHandler
                 return false;
             }
         }
-        private void _run()
+        public bool RequestStopStreamIn()
         {
-            _running = true;
+            try
+            {
+                stream.Close();
+                _streamIn = false;
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
-        private void _unrun()
+        public bool RequestDisconnect()
         {
-            _running = false;
+            try
+            {
+                client.Close();
+                _connected = false;
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
-        public bool IsRunning()
+        public bool IsStreaming()
         {
-            return this._running;
+            return this._streamIn;
         }
         public bool IsConnected()
         {

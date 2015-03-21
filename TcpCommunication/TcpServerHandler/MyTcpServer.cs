@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
@@ -26,12 +27,14 @@ namespace TcpCommunication.TcpServerHandler
             asciiEncoder = new ASCIIEncoding();
             _connected = _listen = _streamIn = false;
         }
-        public void Connect()
+        public void Listen()
         {
+            Thread strm = new Thread(StreamIn);
             try
             {
                 /* Start Listeneting at the specified port */
                 listener.Start();
+                _listen = true;
                 while (_listen)
                 {
                     Console.WriteLine("The server is running at port {0}...", port);
@@ -40,8 +43,9 @@ namespace TcpCommunication.TcpServerHandler
 
                     socket = listener.AcceptSocket();
                     Console.WriteLine("Connection accepted from " + socket.RemoteEndPoint);
+                    _connected = true;
+                    strm.Start();
                 }
-                _connected = true;
             }
             catch (Exception e)
             {
@@ -49,18 +53,26 @@ namespace TcpCommunication.TcpServerHandler
                 Console.WriteLine("Error..... " + e.StackTrace);
             }
         }
-        public byte[] StreamIn()
+        public void StreamIn()
         {
-            try
+            byte_b = new byte[256];
+            int k;
+            bool streamSuccess;
+
+            _streamIn = true;
+            while (_streamIn)
             {
-                byte_b = new byte[256];
-                int k = socket.Receive(byte_b);
-                return byte_b;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error..... " + e.StackTrace);
-                return null;
+                try
+                {   
+                    k = socket.Receive(byte_b);
+                    streamSuccess = StreamOut(byte_b);
+                    if (!streamSuccess)
+                        throw new Exception();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error..... " + e.StackTrace);
+                }
             }
         }
         public bool StreamOut(byte[] data)
