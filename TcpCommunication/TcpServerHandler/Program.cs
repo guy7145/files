@@ -27,7 +27,7 @@ namespace TcpCommunication.TcpServerHandler
             lstn.Start();
             cl.Connect();
             rec.Start();
-            cl.StreamOut("abcdefg");
+            cl.StreamOut("Hello!");
             Console.ReadLine();
         }
     }
